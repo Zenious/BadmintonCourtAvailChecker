@@ -1,6 +1,7 @@
+"""Badminton Availability Checker"""
 import os
-import requests
 import time
+import requests
 from bs4 import BeautifulSoup
 from dotenv import load_dotenv
 from selenium import webdriver
@@ -46,25 +47,27 @@ for venue_name, venue_no in venues:
         'accept': 'application/json, text/javascript, */*; q=0.01',
         'x-requested-with': 'XMLHttpRequest',
         'sec-ch-ua-mobile': '?0',
-        'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.82 Safari/537.36',
+        'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 \
+            (KHTML, like Gecko) Chrome/93.0.4577.82 Safari/537.36',
         'sec-ch-ua-platform': '"macOS"',
         'sec-fetch-site': 'same-origin',
         'sec-fetch-mode': 'cors',
         'sec-fetch-dest': 'empty',
-        'referer': f'https://members.myactivesg.com/facilities/view/activity/18/venue/{venue_no}',
+        'referer': f'https://members.myactivesg.com/facilities/view/activity/18/venue/\
+            {venue_no}',
         'accept-language': 'en-US,en;q=0.9,fr;q=0.8',
     }
 
     # print(f'Getting result for {venue_name}')
     res = s.get(
-        f'https://members.myactivesg.com/facilities/ajax/getTimeslots?activity_id=18&venue_id={venue_no}&DATE={DATE}', headers=headers)
+        f'https://members.myactivesg.com/facilities/ajax/getTimeslots?\
+        activity_id=18&venue_id={venue_no}&DATE={DATE}', headers=headers)
     time.sleep(1)
     content = res.json()
     if isinstance(content) is str:
         if "There are no available slots for your preferred DATE." in content:
             continue
-        else:
-            print(content)
+        print(content)
     content = content['activesg']
     tags = content.replace('\\/', '/')
     soup = BeautifulSoup(tags, "html.parser")
