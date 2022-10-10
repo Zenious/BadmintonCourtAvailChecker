@@ -6,6 +6,7 @@ from bs4 import BeautifulSoup
 from dotenv import load_dotenv
 from selenium import webdriver
 from selenium.webdriver.support.ui import Select
+from selenium.webdriver.common.by import By
 
 load_dotenv()
 
@@ -18,15 +19,15 @@ EPOCH_TIME = 1633622400
 driver = webdriver.Chrome('./chromedriver')
 driver.get('https://members.myactivesg.com/auth')
 
-driver.find_element_by_id("email").send_keys(USERNAME)
-driver.find_element_by_id("password").send_keys(PASSWORD)
+driver.find_element(By.ID, "email").send_keys(USERNAME)
+driver.find_element(By.ID, "password").send_keys(PASSWORD)
 time.sleep(2)
-driver.find_element_by_id("btn-submit-login").click()
+driver.find_element(By.ID, "btn-submit-login").click()
 
 time.sleep(1)
 driver.get('https://members.myactivesg.com/facilities/view/activity/18/venue/292')
 time.sleep(1)
-select = Select(driver.find_element_by_id('facVenueSelection'))
+select = Select(driver.find_element(By.ID, 'facVenueSelection'))
 for option in (select.options):
     if not option.get_attribute("value"):
         continue
